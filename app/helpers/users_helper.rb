@@ -5,4 +5,6 @@ module UsersHelper
     gravator_url = "https://secure.gravator.com/avatar/#{gravator_id}?s=#{size}"
     image_tag(gravator_url, alt: user.name, class: "gravator")
   end
+  
+
 end
