@@ -38,12 +38,36 @@ describe "AuthenticationPages" do
       it {should have_link('Sign out', href: signout_path)}
       it {should_not have_link('Sign in', href: signin_path)}
       
+      describe "followed by signup" do
+        before {visit signup_path}
+        it {should_not have_selector('title', 'Sign up')}
+      end
+
+      describe "create request not allowed" do
+        before { post users_path }
+
+        specify {response.should redirect_to(root_path)}
+      end
+
+      describe "new request not allowed" do
+        before { get new_user_path }
+        specify {response.should redirect_to(root_path)}
+      end
+      
       describe "followed by signout" do
         before {click_link "Sign out"}
         it {should have_link('Sign in')}
       end
     end
     
+  end
+  
+  describe "when user is not signed in" do
+    before {visit root_path}
+    it "should not display profile and settings links" do
+      page.should_not have_link('Profile')
+      page.should_not have_link('Settings')
+    end
   end
   
   describe "authorization" do
@@ -82,7 +106,20 @@ describe "AuthenticationPages" do
             it "should render the desired protected page" do
               page.should have_selector('title', text: 'Edit user')
             end
+
+            describe "when signing in again" do
+              before do
+                visit signin_path
+                fill_in "Email", with: user.email
+                fill_in "Password", with: user.password
+                click_button "Sign in"
+              end
+              it "should render the default profile page" do
+                page.should have_selector('title', text: user.name)
+              end
+            end
           end
+
         end
         
         describe "visiting the edit page" do
