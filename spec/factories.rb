@@ -8,6 +8,14 @@ FactoryGirl.define do
     factory :admin do
        admin true
      end
+<<<<<<< HEAD
+=======
+  end
+  
+  factory :micropost do
+    content "Lorem Ipsum"
+    user
+>>>>>>> user-microposts
   end
   
  

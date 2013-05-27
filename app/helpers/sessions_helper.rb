@@ -24,10 +24,23 @@ module SessionsHelper
   
 <<<<<<< HEAD
 
+<<<<<<< HEAD
 =======
   def current_user?(user)
     user == current_user
   end
+=======
+  def current_user?(user)
+    user == current_user
+  end
+
+  def signed_in_user
+    unless signed_in?
+      store_location
+      redirect_to signin_url, notice: "Please sign in."
+    end
+  end
+>>>>>>> user-microposts
   
   def redirect_back_or(default)
     redirect_to(session[:return_to] || default)
@@ -38,5 +51,8 @@ module SessionsHelper
     session[:return_to] = request.url
   end
   
+<<<<<<< HEAD
 >>>>>>> updating-users
+=======
+>>>>>>> user-microposts
 end

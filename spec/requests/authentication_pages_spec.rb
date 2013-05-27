@@ -29,9 +29,13 @@ describe "AuthenticationPages" do
       before do
 <<<<<<< HEAD
         valid_signin(user)
+<<<<<<< HEAD
 =======
         sign_in(user)
 >>>>>>> updating-users
+=======
+        sign_in(user)
+>>>>>>> user-microposts
       end
       
       it {should have_selector('title', text: user.name)}
@@ -41,6 +45,22 @@ describe "AuthenticationPages" do
       it {should have_link('Sign out', href: signout_path)}
       it {should_not have_link('Sign in', href: signin_path)}
       
+      describe "followed by signup" do
+        before {visit signup_path}
+        it {should_not have_selector('title', 'Sign up')}
+      end
+
+      describe "create request not allowed" do
+        before { post users_path }
+
+        specify {response.should redirect_to(root_path)}
+      end
+
+      describe "new request not allowed" do
+        before { get new_user_path }
+        specify {response.should redirect_to(root_path)}
+      end
+      
       describe "followed by signout" do
         before {click_link "Sign out"}
         it {should have_link('Sign in')}
@@ -49,6 +69,17 @@ describe "AuthenticationPages" do
     
   end
   
+<<<<<<< HEAD
+=======
+  describe "when user is not signed in" do
+    before {visit root_path}
+    it "should not display profile and settings links" do
+      page.should_not have_link('Profile')
+      page.should_not have_link('Settings')
+    end
+  end
+  
+>>>>>>> user-microposts
   describe "authorization" do
     
     describe "as non-admin user" do
@@ -65,6 +96,22 @@ describe "AuthenticationPages" do
     
     describe "for non-signed in users" do
       let (:user) {FactoryGirl.create(:user)}
+<<<<<<< HEAD
+=======
+
+      describe "in the Microposts controller" do
+
+        describe "submitting to the create action" do
+          before {post microposts_path}
+          specify {expect(response).to redirect_to(signin_path)}
+        end
+
+        describe "submitting to the destroy action" do
+          before {delete micropost_path(FactoryGirl.create(:micropost))}
+          specify{expect(response).to redirect_to(signin_path)}
+        end
+      end
+>>>>>>> user-microposts
       
       describe "in the Users controller" do
         
@@ -85,7 +132,24 @@ describe "AuthenticationPages" do
             it "should render the desired protected page" do
               page.should have_selector('title', text: 'Edit user')
             end
+<<<<<<< HEAD
           end
+=======
+
+            describe "when signing in again" do
+              before do
+                visit signin_path
+                fill_in "Email", with: user.email
+                fill_in "Password", with: user.password
+                click_button "Sign in"
+              end
+              it "should render the default profile page" do
+                page.should have_selector('title', text: user.name)
+              end
+            end
+          end
+
+>>>>>>> user-microposts
         end
         
         describe "visiting the edit page" do
